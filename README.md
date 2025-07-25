@@ -121,3 +121,10 @@ The frontend stores JWT token and user info in localStorage.
 
 Admin Dashboard
 ![alt text](image-7.png)![alt text](image-8.png)
+
+
+Deployment:
+frontend : https://mern-final-project-2ins.vercel.app/
+
+
+backend : https://mern-final-project-y2w1.onrender.com/
