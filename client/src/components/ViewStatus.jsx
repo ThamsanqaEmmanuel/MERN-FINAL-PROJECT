@@ -72,7 +72,6 @@ const ViewStatus = () => {
             required
           />
         </div>
-        <Button type="submit">Update Application</Button>
       </form>
     </div>
   );
