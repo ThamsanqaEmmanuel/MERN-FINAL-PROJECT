@@ -1,25 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import ApplyForm from "../components/ApplyForm";
-import ViewStatus from "../components/ViewStatus";
-import ContactForm from "../components/ContactForm";
 
-const Dashboard = ({ activeSection, onNavChange }) => {
-  const renderSection = () => {
-    switch (activeSection) {
-      case "apply":
-        return <ApplyForm />;
-      case "status":
-        return <ViewStatus />;
-      case "contact":
-        return <ContactForm />;
-      default:
-        return <ApplyForm />;
+const Dashboard = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      navigate("/login");
     }
-  };
+  }, [navigate]);
 
   return (
     <div className="p-4">
-      {renderSection()}
+      <ApplyForm />
     </div>
   );
 };

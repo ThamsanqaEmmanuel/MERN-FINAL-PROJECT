@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import DarkModeToggle from "./DarkModeToggle";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-const Navbar = ({ onNavChange, activeSection }) => {
+const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const token = localStorage.getItem("token");
@@ -15,7 +15,24 @@ const Navbar = ({ onNavChange, activeSection }) => {
     navigate("/login");
   };
 
-  const isDashboard = location.pathname.startsWith("/dashboard");
+  // routes that belong to logged-in users
+  const protectedRoutes = [
+    "/dashboard",
+    "/view-status",
+    "/contact",
+    "/user-profile",
+  ];
+
+  const isDashboard = protectedRoutes.some((route) =>
+    location.pathname.startsWith(route)
+  );
+
+  const name = localStorage.getItem("name") || "User";
+  const initials = name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase();
 
   return (
     <nav className="flex items-center justify-between p-4 shadow-md bg-white dark:bg-gray-900">
@@ -30,37 +47,42 @@ const Navbar = ({ onNavChange, activeSection }) => {
           <>
             {isDashboard && (
               <>
-                
+                <Link to="/dashboard">
+                  <Button variant="ghost">Dashboard</Button>
+                </Link>
+
                 <Link to="/view-status">
-                <Button variant="ghost">View Status</Button>
+                  <Button variant="ghost">View Status</Button>
                 </Link>
+
                 <Link to="/contact">
-                <Button variant="ghost">Contact</Button>
+                  <Button variant="ghost">Contact</Button>
                 </Link>
-                
 
                 <div className="flex items-center space-x-2 ml-4">
-                 <Link to="/user-profile">
-                  <Avatar>
-                    <AvatarFallback>
-                      {(localStorage.getItem("name")?.[0] || "U").toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
+                  <Link to="/user-profile">
+                    <Avatar>
+                      <AvatarFallback>{initials}</AvatarFallback>
+                    </Avatar>
                   </Link>
+
                   <span className="hidden sm:inline font-semibold text-gray-700 dark:text-gray-300">
-                    Welcome, {localStorage.getItem("name") || "User"}
+                    Welcome, {name}
                   </span>
+
                   <Button variant="destructive" onClick={handleLogout}>
                     Logout
                   </Button>
                 </div>
               </>
             )}
+
             {!isDashboard && (
               <>
                 <Link to="/dashboard">
                   <Button variant="ghost">Dashboard</Button>
                 </Link>
+
                 <Button variant="destructive" onClick={handleLogout}>
                   Logout
                 </Button>
@@ -72,6 +94,7 @@ const Navbar = ({ onNavChange, activeSection }) => {
             <Link to="/login">
               <Button>Login</Button>
             </Link>
+
             <Link to="/register">
               <Button variant="outline">Register</Button>
             </Link>
